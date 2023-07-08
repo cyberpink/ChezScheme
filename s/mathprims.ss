@@ -541,6 +541,10 @@
      (lambda (x y)
        (#2%fxarithmetic-shift x y)))
 
+   (set! fxpopcount
+      (lambda (x)
+        (#2%fxpopcount x)))
+
    (set! fxlognot
       (lambda (x)
          (#2%fxlognot x)))

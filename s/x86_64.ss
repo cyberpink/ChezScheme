@@ -699,6 +699,10 @@
          (go info op t t y)
          `(set! ,(make-live-info) ,z ,t)))])
 
+  (define-instruction value popcount
+    [(op (z ur) (x ur mem))
+     `(set! ,(make-live-info) ,z (asm ,info ,asm-popcount ,x))])
+
   (define-instruction value move
     [(op (z mem) (x ur imm32))
      `(set! ,(make-live-info) ,z ,x)]
@@ -993,7 +997,7 @@
 (module asm-module (; required exports
                      asm-move asm-move/extend asm-load asm-store asm-swap asm-library-call asm-library-jump
                      asm-mul asm-muli asm-addop asm-add asm-sub asm-negate asm-sub-negate
-                     asm-pop asm-shiftop asm-sll asm-logand asm-lognot
+                     asm-pop asm-shiftop asm-sll asm-logand asm-lognot asm-popcount
                      asm-logtest asm-fl-relop asm-relop asm-push asm-indirect-jump asm-literal-jump
                      asm-direct-jump asm-return-address asm-jump asm-conditional-jump asm-data-label asm-rp-header
                      asm-lea1 asm-lea2 asm-indirect-call asm-condition-code
@@ -1078,6 +1082,8 @@
   (define-op asli (*) shifti-op #b1100000 #b100)
   (define-op lsri (*) shifti-op #b1100000 #b101)
   (define-op asri (*) shifti-op #b1100000 #b111)
+
+  (define-op popcount (*) popcount-op)
 
   (define-op addi (#;b *) addi-op   #b100000 #b000)
   (define-op subi (#;b *) addi-op   #b100000 #b101)
@@ -1417,6 +1423,17 @@
         (ax-ea-sib dest-ea)
         (ax-ea-addr-disp dest-ea)
         (ax-ea-imm-data 'byte imm-ea))))
+
+  (define popcount-op
+    (lambda (op size dest-reg src-ea code*)
+      (emit-code (op src-ea dest-reg code*)
+                 (build byte #xF3)
+                 (ax-ea-rex (if (eq? size 'quad) 1 0) src-ea dest-reg size)
+                 (build byte #x0F)
+                 (build byte #xB8)
+                 (ax-ea-modrm-reg src-ea dest-reg)
+                 (ax-ea-sib src-ea)
+                 (ax-ea-addr-disp src-ea))))
 
   (define binary-op
     (lambda (op size op-code source dest code*)
@@ -2097,6 +2114,11 @@
           [else
             (safe-assert (ax-register? src1 %rcx))
             (emit asr dest code*)]))))
+
+  (define asm-popcount
+    (lambda (code* dest src)
+      (Trivit (dest src)
+        (emit popcount dest src code*))))
 
   (define asm-logand
     (lambda (code* dest src0 src1)

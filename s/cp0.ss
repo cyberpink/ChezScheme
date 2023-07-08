@@ -2468,6 +2468,7 @@
         (fold (fxlogtest tfixnum? tfixnum?) boolean? #2%logtest)
         (fold (fxif tfixnum? tfixnum? tfixnum?) tfixnum? #2%bitwise-if)
         (fold (fxbit-count tfixnum?) tfixnum? #2%bitwise-bit-count)
+        (fold (fxpopcount tfixnum?) tfixnum? #2%fxpopcount)
         (fold (fxlength tfixnum?) tfixnum? #2%bitwise-length)
         (fold (fxfirst-bit-set tfixnum?) tfixnum? #2%bitwise-first-bit-set)
         (fold (fx1+ tfixnum?) tfixnum? #2%1+)

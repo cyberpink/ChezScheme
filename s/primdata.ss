@@ -69,6 +69,7 @@
   (fxior [sig [(fixnum ...) -> (fixnum)]] [flags arith-op partial-folder])
   (fxxor [sig [(fixnum ...) -> (fixnum)]] [flags arith-op partial-folder])
   (fxif [sig [(fixnum fixnum fixnum) -> (fixnum)]] [flags arith-op cp02])
+  (fxpopcount [sig [(fixnum) -> (fixnum)]] [flags arith-op cp02])
   (fxbit-count [sig [(fixnum) -> (fixnum)]] [flags arith-op cp02])
   (fxlength [sig [(fixnum) -> (fixnum)]] [flags arith-op cp02])
   (fxfirst-bit-set [sig [(fixnum) -> (fixnum)]] [flags arith-op cp02])

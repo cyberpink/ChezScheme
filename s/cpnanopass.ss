@@ -4271,6 +4271,15 @@
                       ,(build-fx*
                          (build-fx/ src sexpr e1 e2)
                          e2 #f)))]))))
+
+        (define-inline 3 fxpopcount
+          [(e) (bind #f (e) (build-fix (%inline popcount ,e)))])
+        (define-inline 2 fxpopcount
+          [(e) (bind #t (e)
+                 `(if ,(%type-check mask-fixnum type-fixnum ,e)
+                      ,(build-fix (%inline popcount ,e))
+                      ,(build-libcall #t #f sexpr fxpopcount e)))])
+
         (let ()
           (define do-fxsll
             (lambda (e1 e2)

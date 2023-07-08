@@ -2583,6 +2583,7 @@
      (fxxor #f 2 #t #t)
      (fxand #f 2 #t #t)
      (fxnot #f 1 #t #t)
+     (fxpopcount #f 1 #t #t)
      (fxarithmetic-shift-left #f 2 #f #t)
      (fxarithmetic-shift-right #f 2 #t #t)
      (fxarithmetic-shift #f 2 #f #t)
